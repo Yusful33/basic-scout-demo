@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     paths:
-      - 'ContainerizedRepo/DockerfileCR'
+      - 'ContainerizedRepo/Dockerfile'
       - '.github/workflows/main.yml'
 
 jobs:
@@ -46,5 +46,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           context: ./ContainerizedRepo
-          file: ./ContainerizedRepo/DockerfileCR
+          file: ./ContainerizedRepo/Dockerfile
           platforms: linux/amd64,linux/arm64
