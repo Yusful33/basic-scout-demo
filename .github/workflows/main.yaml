@@ -7,13 +7,6 @@ on:
         - 'ContainerizedRepo/DockerfileCR'
         - '.github/workflows/main.yaml'
 
-env:
-  # Hostname of your registry
-  REGISTRY: docker.io
-  # Image repository, without hostname and tag
-  IMAGE_NAME: flask-app
-  SHA: ${{ github.event.pull_request.head.sha || github.event.after }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,18 +26,28 @@ jobs:
           version: "lab:latest"
           driver: cloud
           endpoint: "dockersales/yusuf-basic-nlp"
+
+      - name: Meta
+          id: meta
+          uses: docker/metadata-action@v3
+          with:
+            images: demonstrationorg/basic
+            tags: |
+              type=ref,event=branch
+              type=ref,event=pr
+              type=semver,pattern={{version}}
+              type=sha
       
 
 
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@v5
-        with:
-          sbom: ${{ github.event_name != 'pull_request' }}
-          provenance: ${{ github.event_name != 'pull_request' }}
-          push: ${{ github.event_name != 'pull_request' }}
-          load: ${{ github.event_name == 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          context: .
-          platforms: linux/amd64,linux/arm64
+        - name: Build and push Docker image
+            id: build-and-push
+            uses: docker/build-push-action@v5
+            with:
+            sbom: ${{ github.event_name != 'pull_request' }}
+            provenance: ${{ github.event_name != 'pull_request' }}
+            push: true
+            tags: ${{ steps.meta.outputs.tags }}
+            labels: ${{ steps.meta.outputs.labels }}
+            context: .
+            platforms: linux/amd64,linux/arm64
