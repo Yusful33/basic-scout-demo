@@ -1,9 +1,11 @@
 name: ci
 
+
 on:
-  push:
-    branches:
-      - main
+    push:
+      paths:
+        - 'ContainerizedRepo/DockerfileCR'
+        - '.github/workflows/main.yaml'
 
 env:
   # Hostname of your registry
@@ -32,22 +34,7 @@ jobs:
           driver: cloud
           endpoint: "dockersales/yusuf-basic-nlp"
       
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          labels: |
-            org.opencontainers.image.revision=${{ env.SHA }}
-          tags: |
-            type=edge,branch=$repo.default_branch
-            type=semver,pattern=v{{version}}
-            type=sha,prefix=,suffix=,format=short
 
-      - name: Log Docker metadata
-        run: |
-            echo "Tags: ${{ steps.meta.outputs.tags }}"
-            echo "Labels: ${{ steps.meta.outputs.labels }}"
 
       - name: Build and push Docker image
         id: build-and-push
