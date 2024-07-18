@@ -7,7 +7,7 @@
 ## docker build --no-cache --provenance=true -t demonstrationorg/basic:10.1.1 . 
 ##LGPL Licensing issues...
 
-ARG NODE_VERSION=20.2.0
+ARG NODE_VERSION=20.2.1
 
 FROM node:${NODE_VERSION}-alpine
 
