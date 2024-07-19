@@ -50,9 +50,10 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-            context: .
-            push: true
-            tags: ${{ steps.meta.outputs.tags }}
+          context: containerizedrepo/
+          dockerfile: Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
 
       # Compare the image built in the pull request with the one in production
       - name: Docker Scout
