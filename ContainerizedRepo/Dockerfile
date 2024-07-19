@@ -7,7 +7,7 @@
 ## docker build --no-cache --provenance=true -t demonstrationorg/basic:10.1.1 . 
 ##LGPL Licensing issues...
 
-ARG NODE_VERSION=20.2.1
+ARG NODE_VERSION=21.6.1
 
 FROM node:${NODE_VERSION}-alpine
 
@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 # Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
 # into this layer.
 RUN --mount=type=bind,source=package.json,target=package.json \
-    # --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
