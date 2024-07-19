@@ -44,7 +44,7 @@ jobs:
           tags: |
             type=edge,branch=$repo.default_branch
             type=semver,pattern=v{{version}}
-            type=sha,prefix=,suffix=,format=short
+        # type=sha,prefix=,suffix=,format=short
 
       # Compare the image built in the pull request with the one in production
       - name: Docker Scout
@@ -54,7 +54,7 @@ jobs:
         with:
           organization: demonstrationorg
           command: compare
-          image: ${{ steps.meta.outputs.tags }}
+        #   image: ${{ steps.meta.outputs.tags }}
         #   to-env: production
           ignore-unchanged: true
           only-severities: critical,high
