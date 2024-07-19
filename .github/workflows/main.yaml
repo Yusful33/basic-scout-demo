@@ -52,6 +52,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         uses: docker/scout-action@v1
         with:
+          organization: demonstrationorg
           command: compare
           image: ${{ steps.meta.outputs.tags }}
           to-env: production
