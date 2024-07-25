@@ -45,7 +45,10 @@ jobs:
             type=edge,branch=$repo.default_branch
             type=semver,pattern=v{{version}}
             type=sha,prefix=,suffix=,format=short
-    
+
+      -  name: List directory contents
+            run: ls -al ../../
+
         # Build and push the Docker image
       - name: Build and push
         uses: docker/build-push-action@v2
