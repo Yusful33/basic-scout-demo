@@ -47,7 +47,7 @@ jobs:
             type=sha,prefix=,suffix=,format=short
 
       -  name: List directory contents
-         run: ls -al ../../
+         run: ls -al ././
 
         # Build and push the Docker image
       - name: Build and push
