@@ -46,7 +46,7 @@ jobs:
             type=semver,pattern=v{{version}}
             type=sha,prefix=,suffix=,format=short
 
-
+      # Need to set path correctly for context in build/push step to work!!!
       - name: Checkout code
         uses: actions/checkout@v2
 
