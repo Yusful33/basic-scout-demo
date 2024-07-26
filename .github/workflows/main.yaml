@@ -49,26 +49,18 @@ jobs:
       # Need to set path correctly for context in build/push step to work!!!
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: List contents of basic-scout-demo
-        run: ls -al ../../basic-scout-demo
     
       - name: List all contents of basic-scout-demo
         run: ls -R ../../basic-scout-demo
-
-      - name: List all contents of nested basic-scout-demo
-        run: ls -al ../../basic-scout-demo/basic-scout-demo
-
-      - name: List all contents recursively from repository root
-        run: ls -R
       
-
         # Build and push the Docker image
       - name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ../../basic-scout-demo/basic-scout-demo/ContainerizedRepo
           dockerfile: Dockerfile 
+          sbom: ${{ github.event_name != 'pull_request' }}
+          provenance: ${{ github.event_name != 'pull_request' }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
 
