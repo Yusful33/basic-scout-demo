@@ -46,8 +46,12 @@ jobs:
             type=semver,pattern=v{{version}}
             type=sha,prefix=,suffix=,format=short
 
-      -  name: List directory contents
-         run: ls -al ../../basic-scout-demo/
+      - name: List contents of basic-scout-demo
+        run: ls -al ../../basic-scout-demo
+    
+      - name: List all contents of basic-scout-demo
+        run: ls -R ../../basic-scout-demo
+      
 
         # Build and push the Docker image
       - name: Build and push
