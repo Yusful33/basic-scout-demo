@@ -56,7 +56,7 @@ jobs:
         run: ls -al ../../basic-scout-demo/basic-scout-demo
 
       - name: List all contents recursively from repository root
-        run: ls -R ../../
+        run: ls -R
       
 
         # Build and push the Docker image
