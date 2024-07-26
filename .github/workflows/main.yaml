@@ -49,7 +49,7 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: List contents of basic-scout-demo
         run: ls -al ../../basic-scout-demo
     
@@ -67,7 +67,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ../../ContainerizedRepo
+          context: ../../basic-scout-demo/basic-scout-demo/ContainerizedRepo
           dockerfile: Dockerfile 
           push: true
           tags: ${{ steps.meta.outputs.tags }}
