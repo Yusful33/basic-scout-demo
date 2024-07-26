@@ -73,7 +73,7 @@ jobs:
           organization: demonstrationorg
           command: compare
           image: ${{ steps.meta.outputs.tags }}
-          to-env: 0.0.1
+          to-env: prod
           ignore-unchanged: true
           only-severities: critical,high
           github-token: ${{ secrets.GITHUB_TOKEN }}
