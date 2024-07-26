@@ -60,7 +60,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ../../basic-scout-demo/ContainerizedRepo
+          context: ../../basic-scout-demo/basic-scout-demo/ContainerizedRepo
           dockerfile: Dockerfile # Adjusting the path to the Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
