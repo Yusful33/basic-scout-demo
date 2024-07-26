@@ -59,6 +59,7 @@ jobs:
         with:
           context: ../../basic-scout-demo/basic-scout-demo/ContainerizedRepo
           dockerfile: Dockerfile 
+          env: prod
           sbom: ${{ github.event_name != 'pull_request' }}
           provenance: ${{ github.event_name != 'pull_request' }}
           push: true
