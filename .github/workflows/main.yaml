@@ -51,6 +51,9 @@ jobs:
     
       - name: List all contents of basic-scout-demo
         run: ls -R ../../basic-scout-demo
+
+      - name: List contents of basic-scout-demo squared
+        run: ls -al ../../basic-scout-demo/basic-scout-demo
       
 
         # Build and push the Docker image
