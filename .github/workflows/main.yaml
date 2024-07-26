@@ -64,9 +64,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
 
-      - name: Assign image to environment
-        run: docker scout env prod demonstrationorg/basic-scout-demo:*
-
       # Compare the image built in the pull request with the one in production
       - name: Docker Scout
         id: docker-scout
