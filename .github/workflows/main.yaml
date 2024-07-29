@@ -65,6 +65,15 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
 
+      - name: Docker Scout
+        id: docker-scout-environment
+        uses: docker/scout-action@v1
+        with:
+          command: environment
+          image: ${{ steps.meta.outputs.tags }}
+          environment: prod
+          organization: demonstrationorg
+
       # Compare the image built in the pull request with the one in production
       - name: Docker Scout
         id: docker-scout
