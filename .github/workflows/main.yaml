@@ -12,7 +12,7 @@ env:
   # Hostname of your registry
   REGISTRY: docker.io
   # Image repository, without hostname and tag
-  IMAGE_NAME: demonstrationorg/basic
+  IMAGE_NAME: demonstrationorg/basic-scout-demo
   SHA: ${{ github.event.pull_request.head.sha || github.event.after }}
 
 jobs:
@@ -46,15 +46,44 @@ jobs:
             type=semver,pattern=v{{version}}
             type=sha,prefix=,suffix=,format=short
 
+      # Need to set path correctly for context in build/push step to work!!!
+      - name: Checkout code
+        uses: actions/checkout@v2
+    
+      - name: List all contents of basic-scout-demo
+        run: ls -R ../../basic-scout-demo
+      
+        # Build and push the Docker image
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ../../basic-scout-demo/basic-scout-demo/ContainerizedRepo
+          dockerfile: Dockerfile 
+          env: prod
+          sbom: true
+          provenance: true
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - name: Docker Scout
+        id: docker-scout-environment
+        uses: docker/scout-action@v1
+        with:
+          command: environment
+          image: ${{ steps.meta.outputs.tags }}
+          environment: prod
+          organization: demonstrationorg
+
       # Compare the image built in the pull request with the one in production
       - name: Docker Scout
         id: docker-scout
         if: ${{ github.event_name == 'pull_request' }}
         uses: docker/scout-action@v1
         with:
+          organization: demonstrationorg
           command: compare
           image: ${{ steps.meta.outputs.tags }}
-          to-env: production
+          to-env: prod
           ignore-unchanged: true
           only-severities: critical,high
           github-token: ${{ secrets.GITHUB_TOKEN }}
