@@ -4,7 +4,7 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 ## npm install --save grafana-openai-monitoring | npm uninstall --save grafana-openai-monitoring
-## docker build --no-cache --provenance=true -t demonstrationorg/basic:10.1.1 . 
+## docker build --no-cache --provenance=true -t demonstrationorg/basic-scout-demo:0.0.12 . 
 ##LGPL Licensing issues...
 
 ARG NODE_VERSION=21.6.1
@@ -12,7 +12,7 @@ ARG NODE_VERSION=21.6.1
 FROM node:${NODE_VERSION}-alpine
 
 # Use production node environment by default.
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 
 WORKDIR /usr/src/app
