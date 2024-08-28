@@ -4,15 +4,15 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 ## npm install --save grafana-openai-monitoring | npm uninstall --save grafana-openai-monitoring
-## docker build --no-cache --provenance=true -t demonstrationorg/basic:10.1.1 . 
+## docker  build --no-cache --provenance=true --attest type=sbom -t demonstrationorg/basic-scout-demo:0.0.12 . 
 ##LGPL Licensing issues...
 
-ARG NODE_VERSION=21.6.1
+ARG NODE_VERSION=21.6.0
 
 FROM node:${NODE_VERSION}-alpine
 
 # Use production node environment by default.
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 
 WORKDIR /usr/src/app
@@ -22,6 +22,7 @@ WORKDIR /usr/src/app
 # Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
 # into this layer.
 RUN --mount=type=bind,source=package.json,target=package.json \
+#package-lock.json provides a more detailed snapshot of current state as opposed to packge.json
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
