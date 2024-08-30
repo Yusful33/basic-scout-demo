@@ -10,7 +10,7 @@ const port = 3000;
 
 
 // Access the POSTGRES_PASSWORD environment variable (_)
-const dbPassword = process.env.POSTGRES_PASSWORD;
+const dbPassword = process.env.POSTGRES-PASSWORD;
 
 
 function getSecret(secretName) {
