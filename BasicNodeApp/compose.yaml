@@ -13,8 +13,12 @@ services:
       - db 
     build:
       context: .
+    secrets:
+      - db-password
+      - api-key
     environment:
-      POSTGRES_PASSWORD: example
+      - API_KEY=/run/secrets/api-key
+      - POSTGRES_PASSWORD=/run/secrets/db-password
     ports:
       - 3000:3000
     develop:
@@ -24,45 +28,21 @@ services:
   db:
     image: postgres:12.18
     user: postgres
+    secrets:
+      - db-password
     environment:
-      POSTGRES_PASSWORD: example
-    expose:
-      - "5432"
+      - POSTGRES_PASSWORD=/run/secrets/db-password
+    ports:
+      - 5431:5432
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 3
-# The commented out section below is an example of how to define a PostgreSQL
-# database that your application can use. `depends_on` tells Docker Compose to
-# start the database before your application. The `db-data` volume persists the
-# database data between container restarts. The `db-password` secret is used
-# to set the database password. You must create `db/password.txt` and add
-# a password of your choosing to it before running `docker-compose up`.
-#     depends_on:
-#       db:
-#         condition: service_healthy
-#   db:
-#     image: postgres
-#     restart: always
-#     user: postgres
-#     secrets:
-#       - db-password
-#     volumes:
-#       - db-data:/var/lib/postgresql/data
-#     environment:
-#       - POSTGRES_DB=example
-#       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
-#     expose:
-#       - 5432
-#     healthcheck:
-#       test: [ "CMD", "pg_isready" ]
-#       interval: 10s
-#       timeout: 5s
-#       retries: 5
-# volumes:
-#   db-data:
-# secrets:
-#   db-password:
-#     file: db/password.txt
-
+volumes:
+  db-data:
+secrets:
+  db-password:
+    file: credentials/db_password.txt
+  api-key:
+    file: credentials/api_key.txt

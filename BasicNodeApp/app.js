@@ -4,18 +4,35 @@ const axios = require('axios');
 const fs = require('fs');
 
 
+
 const app = express();
 const port = 3000;
 
 
-// Access the POSTGRES_PASSWORD environment variable
+// Access the POSTGRES_PASSWORD environment variable (_)
 const dbPassword = process.env.POSTGRES_PASSWORD;
+
+
+function getSecret(secretName) {
+    try {
+      const secret = fs.readFileSync(`/run/secrets/${secretName}`, 'utf8');
+      return secret.trim();
+    } catch (err) {
+      console.error(`Error reading secret ${secretName}:`, err);
+      return null;
+    }
+  }
+
+console.log(getSecret('api-key'));
+
+// Read the secret from the file
+const apiKey = fs.readFileSync('/run/secrets/api-key', 'utf8').trim();
+
 
 const db = new Client({
     host: 'db',
     user: 'postgres',
     password: dbPassword,
-    // alt database is demo (postgres)
     database: 'postgres',
     port: 5432
   });
@@ -63,7 +80,7 @@ app.get('/', (req, res) => {
 
 // REST API Endpoint
 app.get('/data', (req, res) => {
-  db.query('SELECT * FROM weather_data', (err, results) => {
+  db.query('SELECT * FROM weather_data;', (err, results) => {
     if (err) {
       res.status(500).send('Database error');
       return;
@@ -79,7 +96,7 @@ app.get('/weather', async (req, res) => {
       const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
         params: {
           q: city,
-          appid: '2011c5e9bd90ba0922ab2b165dc0d27b'
+          appid: apiKey
         }
       });
       const weatherData = response.data;
@@ -87,16 +104,29 @@ app.get('/weather', async (req, res) => {
       const description = weatherData.weather[0].description;
   
       // Insert data into the database
-      const query = `INSERT INTO weather_data (city, temperature, description) VALUES (?, ?, ?)`;
+      const query = `INSERT INTO weather_data (city, temperature, description) VALUES ($1, $2, $3)`;
       db.query(query, [city, temperature, description], (err, result) => {
         if (err) {
           console.error('Error inserting data into database:', err);
           res.status(500).send('Database error');
           return;
         }
-        res.send(`Weather data for ${city} inserted into database.`);
       });
+      // Render the data on the page
+      res.send(`
+        <h1>Weather Data for ${city}</h1>
+        <p>Temperature: ${temperature}°C</p>
+        <p>Description: ${description}</p>
+        <p>Data has been successfully loaded into the database.</p>
+        <a href="/" style="text-decoration: none; background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px;">Go back</a>
+      `);
     } catch (error) {
-      res.status(500).send('Error fetching weather data');
+        console.error('Error fetching weather data:', error.response ? error.response.data : error.message);
+        res.status(500).send('Error fetching weather data');
     }
+  });
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
   });
