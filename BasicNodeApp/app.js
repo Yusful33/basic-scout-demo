@@ -119,6 +119,7 @@ app.get('/weather', async (req, res) => {
         <p>Description: ${description}</p>
         <p>Data has been successfully loaded into the database.</p>
         <a href="/" style="text-decoration: none; background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px;">Go back</a>
+        <a href="/data" style="text-decoration: none; background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px;">View All Data</a>
       `);
     } catch (error) {
         console.error('Error fetching weather data:', error.response ? error.response.data : error.message);
