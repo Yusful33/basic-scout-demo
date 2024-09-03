@@ -5,6 +5,10 @@
 # https://docs.docker.com/go/dockerfile-reference/
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
+# docker buildx build  --builder cloud-dockersales-yusuf-basic-nlp --platform=linux/amd64,linux/arm64 --provenance=true --attest type=sbom -t demonstrationorg/basic-node-app:0.0.1 . --push
+## npm install --save grafana-openai-monitoring | npm uninstall --save grafana-openai-monitoring
+## docker scout repo enable demonstrationorg/basic-node-app
+# docker buildx build  --builder cloud-dockersales-yusuf-basic-nlp --platform=linux/amd64,linux/arm64 --provenance=true --attest type=sbom -t demonstrationorg/basic-node-app:0.0.2 . --push
 
 ARG NODE_VERSION=22.2.0
 

@@ -9,8 +9,12 @@ const app = express();
 const port = 3000;
 
 
-// Access the POSTGRES_PASSWORD environment variable (_)
-const dbPassword = process.env.POSTGRES_PASWORD;
+// Undefined variable
+// const undefinedVariable = notDefined; 
+
+
+// Access the POSTGRES_PASSWORD environment variable
+const dbPassword = process.env.POSTGRES_PASSWORD;
 
 
 function getSecret(secretName) {
@@ -22,6 +26,21 @@ function getSecret(secretName) {
       return null;
     }
   }
+
+function insertWeatherData(db, city, temperature, description) {
+return new Promise((resolve, reject) => {
+    const query = `INSERT INTO weather_data (city, temperature, description) VALUES ($1, $2, $3)`;
+    db.query(query, [city, temperature, description], (err, result) => {
+    if (err) {
+        console.error('Error inserting data into database:', err);
+        reject(err);
+    } else {
+        resolve(result);
+    }
+    });
+});
+}
+  
 
 console.log(getSecret('api-key'));
 
@@ -103,15 +122,9 @@ app.get('/weather', async (req, res) => {
       const temperature = weatherData.main.temp;
       const description = weatherData.weather[0].description;
   
-      // Insert data into the database
-      const query = `INSERT INTO weather_data (city, temperature, description) VALUES ($1, $2, $3)`;
-      db.query(query, [city, temperature, description], (err, result) => {
-        if (err) {
-          console.error('Error inserting data into database:', err);
-          res.status(500).send('Database error');
-          return;
-        }
-      });
+      // Insert Data into Database
+      await insertWeatherData(db, city, temperature, description);
+
       // Render the data on the page
       res.send(`
         <h1>Weather Data for ${city}</h1>
