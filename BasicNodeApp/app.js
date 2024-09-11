@@ -115,20 +115,23 @@ app.get('/weather', async (req, res) => {
       const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
         params: {
           q: city,
-          appid: apiKey
+          appid: apiKey,
+          units: imperial
         }
       });
       const weatherData = response.data;
-      const temperature = weatherData.main.temp;
+      const temperatureCelsius = weatherData.main.temp;
+      const temperatureFahrenheit = (temperatureCelsius * (9/5)) + 32;
       const description = weatherData.weather[0].description;
   
       // Insert Data into Database
-      await insertWeatherData(db, city, temperature, description);
+      await insertWeatherData(db, city, temperatureFahrenheit, description);
 
       // Render the data on the page
       res.send(`
         <h1>Weather Data for ${city}</h1>
-        <p>Temperature: ${temperature}°C</p>
+        <p>Temperature: ${temperatureFahrenheit}°F</p>
+        <p>Temperature: ${temperatureCelsius}°C</p>
         <p>Description: ${description}</p>
         <p>Data has been successfully loaded into the database.</p>
         <a href="/" style="text-decoration: none; background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px;">Go back</a>

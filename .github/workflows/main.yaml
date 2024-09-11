@@ -12,7 +12,7 @@ env:
   # Hostname of your registry
   REGISTRY: docker.io
   # Image repository, without hostname and tag
-  IMAGE_NAME: demonstrationorg/basic-scout-demo
+  IMAGE_NAME: demonstrationorg/basic-node-app
   SHA: ${{ github.event.pull_request.head.sha || github.event.after }}
 
 jobs:
@@ -53,11 +53,20 @@ jobs:
       - name: List all contents of basic-scout-demo
         run: ls -R ../../basic-scout-demo
       
+        # Setup Docker Build Cloud 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: "lab:latest"
+          driver: cloud
+          endpoint: "dockersales/yusuf-basic-nlp"
+          install: true
+
         # Build and push the Docker image
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ../../basic-scout-demo/basic-scout-demo/ContainerizedRepo
+          context: ../../basic-scout-demo/basic-scout-demo/BasicNodeApp
           dockerfile: Dockerfile 
           env: prod
           sbom: true
