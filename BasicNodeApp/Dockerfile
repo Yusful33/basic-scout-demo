@@ -9,8 +9,8 @@
 # docker buildx build  --builder cloud-dockersales-yusuf-basic-nlp --provenance=true --attest type=sbom -t demonstrationorg/basic-node-app:0.0.4 . 
 ## docker scout repo enable demonstrationorg/basic-node-app
 # docker buildx build  --builder cloud-dockersales-yusuf-basic-nlp --platform=linux/amd64,linux/arm64 --provenance=true --attest type=sbom -t demonstrationorg/basic-node-app:0.0.5 . --push
-
-ARG NODE_VERSION=22
+# 18.19.1
+ARG NODE_VERSION=18.19.1
 
 FROM node:${NODE_VERSION}-alpine
 
