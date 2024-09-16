@@ -1,3 +1,6 @@
+# Slides for this presentation
+https://docs.google.com/presentation/d/1D7nhJk8gZiYwyLLFRArJoYdw502eLHrfrD1S3E6kZBI/edit?usp=sharing
+
 ## Docker Desktop 
 * git clone https://github.com/Yusful33/basic-scout-demo.git
 * cd BasicNodeApp
