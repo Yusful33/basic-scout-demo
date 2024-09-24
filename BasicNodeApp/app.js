@@ -121,6 +121,9 @@ app.get('/weather', async (req, res) => {
       });
       const weatherData = response.data;
       const temperature = weatherData.main.temp;
+          units: 'imperial'     }
+      });
+      const weatherData = response.data;
       const description = weatherData.weather[0].description;
   
       // Insert Data into Database

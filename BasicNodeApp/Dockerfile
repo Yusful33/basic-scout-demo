@@ -6,16 +6,21 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 ## npm install --save grafana-openai-monitoring | npm uninstall --save grafana-openai-monitoring
+## Build Cloud Multi-Architecture
+# docker buildx build  --builder cloud-dockersales-yusuf-basic-nlp --platform=linux/amd64,linux/arm64 --provenance=true --attest type=sbom -t demonstrationorg/basic-node-app:0.0.5 . --push 
+
 # docker buildx build  --builder cloud-dockersales-yusuf-basic-nlp --provenance=true --attest type=sbom -t demonstrationorg/basic-node-app:0.0.4 . 
 ## docker scout repo enable demonstrationorg/basic-node-app
-# docker buildx build  --builder cloud-dockersales-yusuf-basic-nlp --platform=linux/amd64,linux/arm64 --provenance=true --attest type=sbom -t demonstrationorg/basic-node-app:0.0.5 . --push
+# docker buildx build  --builder cloud-dockersales-yusuf-basic-nlp --platform=linux/amd64,linux/arm64 --provenance=true --attest type=sbom -t demonstrationorg/basic-node-app:0.0.5 . --push 
+# 21.5
 
 ARG NODE_VERSION=20
+=======
 
 FROM node:${NODE_VERSION}-alpine
 
 # Use production node environment by default.
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 
 WORKDIR /usr/src/app
@@ -39,4 +44,4 @@ COPY . .
 EXPOSE 3000
 
 # Run the application.
-CMD node app.js
+CMD ["node", "app.js"]
