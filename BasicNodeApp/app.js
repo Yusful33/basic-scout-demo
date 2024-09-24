@@ -116,19 +116,23 @@ app.get('/weather', async (req, res) => {
         params: {
           q: city,
           appid: apiKey,
+          units: 'imperial'
+        }
+      });
+      const weatherData = response.data;
+      const temperature = weatherData.main.temp;
           units: 'imperial'     }
       });
       const weatherData = response.data;
-      const temperatureFahrenheit = weatherData.main.temp;
       const description = weatherData.weather[0].description;
   
       // Insert Data into Database
-      await insertWeatherData(db, city, temperatureFahrenheit, description);
+      await insertWeatherData(db, city, temperature, description);
 
       // Render the data on the page
       res.send(`
         <h1>Weather Data for ${city}</h1>
-        <p>Temperature: ${temperatureFahrenheit}°F</p>
+        <p>Temperature: ${temperature}°C</p>
         <p>Description: ${description}</p>
         <p>Data has been successfully loaded into the database.</p>
         <a href="/" style="text-decoration: none; background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px;">Go back</a>
