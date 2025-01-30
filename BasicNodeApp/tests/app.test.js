@@ -27,11 +27,20 @@ describe('insertWeatherData', () => {
     expect(result.rowCount).toBe(1);
 
     const { rows } = await getWeatherData(client);
-    console.log(rows);
     expect(rows.length).toBeGreaterThan(0); // Check that rows are returned
     expect(rows[0].city).toBe('New York');
     expect(rows[0].temperature).toBe(25.0);
     expect(rows[0].description).toBe('Clear sky');
-    console.log(rows[0].city)
+    // ASCII art for success
+    console.log(`
+      ******************************
+      *                            *
+      *     TEST PASSED! ✅         *
+      *                            *
+      ******************************
+       \\ (•◡•) /
+        (    )  
+        / | | \\
+  `);
   });
 });
