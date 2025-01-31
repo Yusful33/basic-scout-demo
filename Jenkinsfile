@@ -57,7 +57,7 @@ pipeline {
         
         stage('List Directory Contents') {
             steps {
-                sh 'ls -R ./basic-scout-demo'
+                sh 'ls -R ./BasicNodeApp'
             }
         }
 
