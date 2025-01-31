@@ -1,0 +1,44 @@
+pipeline {
+    agent any  // Runs on any available agent
+
+    environment {
+        DOCKER_REGISTRY = "docker.io"
+        DOCKER_IMAGE = "myrepo/app:latest"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Yusful33/basic-scout-demo.git'
+            }
+        }
+
+        stage('Setup Docker Buildx') {
+            steps {
+                sh 'docker run --rm --privileged multiarch/qemu-user-static --reset -p yes'
+                sh 'docker buildx create --name mybuilder --use'
+                sh 'docker buildx inspect --bootstrap'
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                sh """
+                docker buildx build --platform linux/amd64,linux/arm64 \
+                --push \
+                --file ./BasicNodeApp/Dockerfile \
+                --tag $DOCKER_IMAGE .
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Build completed successfully!"
+        }
+        failure {
+            echo "❌ Build failed!"
+        }
+    }
+}
