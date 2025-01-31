@@ -62,24 +62,15 @@ pipeline {
             }
         }
 
-         stage('Setup Docker Buildx') {
-            steps {
-                script {
-                    // Ensure buildx is available
-                    sh "docker buildx install"
-                    sh "docker buildx inspect --bootstrap"
-                }
-            }
-        }
 
         stage('Build and Push to Docker Hub') {
             steps {
                 sh """
                 docker buildx build --platform linux/amd64,linux/arm64 \
                 --push \
-                --file ./basic-scout-demo/basic-scout-demo/BasicNodeApp/Dockerfile \
+                --file ./basic-scout-demo//BasicNodeApp/Dockerfile \
                 --tag ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest \
-                ./basic-scout-demo/basic-scout-demo/BasicNodeApp
+                ./basic-scout-demo/BasicNodeApp
                 """
             }
         }
