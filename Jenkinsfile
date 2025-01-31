@@ -73,7 +73,7 @@ pipeline {
                 --push \
                 --file ./basic-scout-demo/BasicNodeApp/Dockerfile \
                 --tag ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest \
-                ./basic-scout-demo/BasicNodeApp
+                ./BasicNodeApp
                 """
             }
         }
