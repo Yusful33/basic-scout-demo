@@ -10,6 +10,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
+                cleanWs() // Cleans workspace before pulling fresh code
                 git branch: 'main', url: 'https://github.com/Yusful33/basic-scout-demo.git'
             }
         }
@@ -47,6 +48,13 @@ pipeline {
             }
         }
 
+        stage('List Directory Structure') {
+            steps {
+                sh 'ls -R'
+            }
+        }
+
+        
         stage('List Directory Contents') {
             steps {
                 sh 'ls -R ./basic-scout-demo'
