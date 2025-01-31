@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        REGISTRY = "docker.io"
-        IMAGE_NAME = "demonstrationorg/basic-node-app"
+        DOCKER_REGISTRY = "docker.io"
+        DOCKER_IMAGE = "demonstrationorg/basic-node-app"
         SHA = "${env.GIT_COMMIT}"
         BUILD_CLOUD = "dockersales/yusuf-basic-nlp"
     }
@@ -62,23 +62,23 @@ pipeline {
             }
         }
 
-        stage('Setup Docker Buildx (Cloud)') {
+         stage('Setup Docker Buildx') {
             steps {
-                sh """
-                docker buildx create --name mybuilder --use --driver cloud --endpoint ${BUILD_CLOUD}
-                docker buildx inspect --bootstrap
-                """
+                script {
+                    // Ensure buildx is available
+                    sh "docker buildx install"
+                    sh "docker buildx inspect --bootstrap"
+                }
             }
         }
 
-        stage('Build and Push to Docker Build Cloud') {
+        stage('Build and Push to Docker Hub') {
             steps {
                 sh """
                 docker buildx build --platform linux/amd64,linux/arm64 \
                 --push \
                 --file ./basic-scout-demo/basic-scout-demo/BasicNodeApp/Dockerfile \
                 --tag ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest \
-                --builder ${BUILD_CLOUD} \
                 ./basic-scout-demo/basic-scout-demo/BasicNodeApp
                 """
             }
