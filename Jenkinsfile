@@ -5,6 +5,7 @@ pipeline {
         REGISTRY = "docker.io"
         IMAGE_NAME = "demonstrationorg/basic-node-app"
         SHA = "${env.GIT_COMMIT}"
+        BUILD_CLOUD = "dockersales/yusuf-basic-nlp"
     }
 
     stages {
@@ -61,27 +62,26 @@ pipeline {
             }
         }
 
-        stage('Set Up Docker Buildx (Cloud)') {
+        stage('Setup Docker Buildx (Cloud)') {
             steps {
                 sh """
-                docker buildx create --name mybuilder --use
+                docker buildx create --name mybuilder --use --driver cloud --endpoint ${BUILD_CLOUD}
                 docker buildx inspect --bootstrap
                 """
             }
         }
 
-        stage('Build and Push Docker Image') {
+        stage('Build and Push to Docker Build Cloud') {
             steps {
                 sh """
                 docker buildx build --platform linux/amd64,linux/arm64 \
                 --push \
                 --file ./basic-scout-demo/basic-scout-demo/BasicNodeApp/Dockerfile \
-                --tag ${REGISTRY}/${IMAGE_NAME}:${SHA} \
-                --label ${LABELS} \
+                --tag ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest \
+                --builder ${BUILD_CLOUD} \
                 ./basic-scout-demo/basic-scout-demo/BasicNodeApp
                 """
             }
-
         }
     }
 
