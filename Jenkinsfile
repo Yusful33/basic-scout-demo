@@ -15,12 +15,20 @@ pipeline {
         }
 
         stage('Setup Docker Buildx') {
-            steps {
-                sh 'docker run --rm --privileged multiarch/qemu-user-static --reset -p yes'
-                sh 'docker buildx create --name mybuilder --use'
-                sh 'docker buildx inspect --bootstrap'
-            }
-        }
+                    steps {
+                        script {
+                            // Check if "mybuilder" exists, otherwise create it
+                            def existingBuilder = sh(script: "docker buildx ls | grep mybuilder || true", returnStdout: true).trim()
+                            if (existingBuilder) {
+                                echo "✅ Using existing buildx instance: mybuilder"
+                            } else {
+                                sh "docker buildx create --name mybuilder --use"
+                                sh "docker buildx inspect --bootstrap"
+                            }
+                        }
+                    }
+                }
+        
 
         stage('Authenticate to Docker Hub') {
             steps {
