@@ -21,15 +21,15 @@ pipeline {
                     script {
                         echo "Starting a CPU-intensive task..."
                         sh '''python3 <<EOF
-                        import time
-                        import numpy as np
+                                import time
+                                import numpy as np
 
-                        print("Generating large random matrix...")
-                        matrix = np.random.rand(5000, 5000)  # 5000x5000 Matrix
-                        print("Performing matrix multiplication...")
-                        result = np.matmul(matrix, matrix)
-                        print("Computation completed!")
-                        time.sleep(5)  # Simulate additional processing delay
+                                print("Generating large random matrix...")
+                                matrix = np.random.rand(5000, 5000)  # 5000x5000 Matrix
+                                print("Performing matrix multiplication...")
+                                result = np.matmul(matrix, matrix)
+                                print("Computation completed!")
+                                time.sleep(5)  # Simulate additional processing delay
                         EOF'''
 
                     }
