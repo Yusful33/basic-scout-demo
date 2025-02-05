@@ -20,17 +20,20 @@ pipeline {
                 steps {
                     script {
                         echo "Starting a CPU-intensive task..."
-                        sh '''python3 <<EOF
-                                import time
-                                import numpy as np
+                        sh '''
+                        echo "import time
+                        import numpy as np
 
-                                print("Generating large random matrix...")
-                                matrix = np.random.rand(5000, 5000)  # 5000x5000 Matrix
-                                print("Performing matrix multiplication...")
-                                result = np.matmul(matrix, matrix)
-                                print("Computation completed!")
-                                time.sleep(5)  # Simulate additional processing delay
-                        EOF'''
+                        print('Generating large random matrix...')
+                        matrix = np.random.rand(5000, 5000)  # 5000x5000 Matrix
+                        print('Performing matrix multiplication...')
+                        result = np.matmul(matrix, matrix)
+                        print('Computation completed!')
+                        time.sleep(5)  # Simulate additional processing delay
+                        " > compute.py
+
+                        python3 compute.py
+                        '''
 
                     }
                 }
