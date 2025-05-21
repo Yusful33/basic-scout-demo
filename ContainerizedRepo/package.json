@@ -10,9 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.10.3",
-    "grafana-openai-monitoring": "^0.0.4",
+    "find-my-way": "8.2.2",
     "mysql2": "^3.6.0",
     "redis": "^4.6.7",
-    "restify": "^11.1.0"
+    "restify": "^9.1.0"
   }
 }
