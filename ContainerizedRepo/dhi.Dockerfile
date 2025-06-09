@@ -1,18 +1,19 @@
-# syntax=dhi/dockerfile:1
+
 
 # Comments are provided throughout this file to help you get started.
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 ## npm install --save grafana-openai-monitoring | npm uninstall --save grafana-openai-monitoring
 ## docker  build --no-cache --provenance=true --attest type=sbom -t demonstrationorg/dhi-demo:0.2 .
-## docker build --no-cache  -t demonstrationorg/basic-dhi-demo:2.0 -f dhi.Dockerfile . 
+## docker build --no-cache  -t demonstrationorg/basic-dhi-demo:dev-hardened -f dhi.Dockerfile . 
 ##LGPL Licensing issues...
 
 # ARG NODE_VERSION=20.19.2
 
 # FROM node:${NODE_VERSION}-alpine
 # FROM alpine:latest
-FROM demonstrationorg/dhi-node:20.19.2-alpine3.21-dev
+FROM demonstrationorg/dhi-node:20.19.2-alpine3.21-dev as dev
+
 
 # Use production node environment by default.
 ENV NODE_ENV=production
@@ -35,7 +36,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 USER node
 
 # Copy the rest of the source files into the image.
-COPY . .
+COPY . /app
 
 # Expose the port that the application listens on.
 EXPOSE 8080
