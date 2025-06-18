@@ -4,8 +4,8 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 ## npm install --save grafana-openai-monitoring | npm uninstall --save grafana-openai-monitoring
-## docker build --no-cache  -t demonstrationorg/basic-dhi-demo:unhardened -f Dockerfile . 
-## express 4.17.1
+## docker buildx build --no-cache --sbom=true --provenance=mode=max -t demonstrationorg/basic-dhi-demo:unhardened -f Dockerfile . 
+## express 4.17.1 to 4.21.2
 ##LGPL Licensing issues...
 
 
